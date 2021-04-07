@@ -1,4 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/home/xs108-abhdas/IdeaProjects/test1/src/main/scala/main/WordCount.scala:68:57: No TypeTag available for Person[0m
-[0m[[0m[31merror[0m] [0m[0m    implicit val enc: Encoder[Person] = Encoders.product[Person][0m
-[0m[[0m[31merror[0m] [0m[0m                                                        ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/xs108-abhdas/IdeaProjects/test1/src/main/scala/main/SparkTASK.scala:87:34: org.apache.spark.sql.DataFrameReader does not take parameters[0m
+[0m[[0m[31merror[0m] [0m[0m    val jsonSampledf = spark.read().json("/home/xs108-abhdas/Downloads/Sample-JSON-file-with-multiple-records-download.json")[0m
+[0m[[0m[31merror[0m] [0m[0m                                 ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m

@@ -15,7 +15,7 @@ case class Person(Name: String,
                   Height: String,
                   Weight: String)
 
-object WordCount {
+object SparkTASK {
 
 
   implicit val enc: Encoder[Person] = Encoders.product[Person]
@@ -27,6 +27,7 @@ object WordCount {
     val sc = new SparkContext(conf)
     val spark = SparkSession
       .builder()
+      .master("local")
       .appName("Spark SQL basic")
       .config("spark.some.config.option", "some-value")
       .getOrCreate()
@@ -47,9 +48,9 @@ object WordCount {
     println(sqldf.show())
 
 
-    val biostats_df = spark.read.option("header","true").csv("/home/xs108-abhdas/Downloads/biostats.csv").toDF().persist(StorageLevel.MEMORY_AND_DISK)   //persistence
+    val biostats_df = spark.read.option("inferSchema","true").option("header","true").csv("/home/xs108-abhdas/Downloads/biostats.csv").toDF().persist(StorageLevel.MEMORY_AND_DISK)   //persistence
     biostats_df.createOrReplaceTempView("biostats_df")
-    val query1 = spark.sql("Select * From biostats_df Where Age >40").show()
+    spark.sql("SELECT * FROM biostats_df WHERE Age BETWEEN 35 AND 45 ").show()  //sql query over csv file to get all records having age >35
 
 
     println("Dataframe:" + biostats_df.show())
@@ -57,14 +58,17 @@ object WordCount {
 
     val biostats_ds = biostats_df.as[Person]
     biostats_ds.createOrReplaceTempView(("biostats_ds"))
-    val query2 = spark.sql("Select * From biostats_ds where sex = 'M'").show()
+    spark.sql("Select * From biostats_ds where sex = 'M'").show()   //sql query over csv file to get all records having sex = male
     // org.apache.spark.sql.catalyst.encoders.OuterScopes.addOuterScope(this)
+
+
+
 
 
     // val biostats_ds = spark.read.csv("/home/xs108-abhdas/Downloads/biostats.csv").as[Person]
 
 
-    import spark.implicits._
+    //import spark.implicits._
 
 
 
@@ -75,9 +79,25 @@ object WordCount {
       .option("inferSchema", "true")
       .load("/home/xs108-abhdas/Downloads/biostats.csv")
       .as[Person] */
+   println("Dataset:" + biostats_ds.show())
 
 
-    println("Dataset:" + biostats_ds.show())
+   // loading json data
+    val jsonSampledf = spark.read.option("inferSchema","true").option("multiLines","true").json("/home/xs108-abhdas/Downloads/sample.json")
+    jsonSampledf.printSchema()
+    jsonSampledf.createOrReplaceTempView("employee")
+    println(jsonSampledf.show())
+    spark.sql("SELECT COUNT(userId) FROM employee").show()
+    spark.sql("SELECT userId FROM employee WHERE firstName = 'racks' ").show()  //sql query over json file to search for a first name
+
+
+   // loading parquet data
+   val Employeedf = spark.read.option("inferSchema","true").option("multiLines","true").json("/home/xs108-abhdas/Downloads/sample.json")
+   Employeedf.write.parquet("Employee.parquet")
+   val parquetFileDF = spark.read.parquet("Employee.parquet")
+   parquetFileDF.createOrReplaceTempView("parquetFile")
+   spark.sql("SELECT name FROM parquetFile WHERE userID BETWEEN 2 AND 4").show()
+
     spark.close()
     sc.stop()
   }
