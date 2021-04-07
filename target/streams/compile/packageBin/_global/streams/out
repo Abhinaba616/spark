@@ -1,0 +1,17 @@
+[0m[[0m[0mdebug[0m] [0m[0mPackaging /home/xs108-abhdas/IdeaProjects/test1/target/scala-2.12/test1_2.12-0.1.0-SNAPSHOT.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	main[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/xs108-abhdas/IdeaProjects/test1/target/scala-2.12/classes/main[0m
+[0m[[0m[0mdebug[0m] [0m[0m	main/WordCount.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/xs108-abhdas/IdeaProjects/test1/target/scala-2.12/classes/main/WordCount.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	main/Person$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/xs108-abhdas/IdeaProjects/test1/target/scala-2.12/classes/main/Person$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	main/Person.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/xs108-abhdas/IdeaProjects/test1/target/scala-2.12/classes/main/Person.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	main/WordCount$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/xs108-abhdas/IdeaProjects/test1/target/scala-2.12/classes/main/WordCount$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	main/WordCount$$typecreator5$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/xs108-abhdas/IdeaProjects/test1/target/scala-2.12/classes/main/WordCount$$typecreator5$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	main/WordCount$$typecreator1$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/xs108-abhdas/IdeaProjects/test1/target/scala-2.12/classes/main/WordCount$$typecreator1$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
