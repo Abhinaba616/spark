@@ -49,17 +49,15 @@ object WordCount {
 
     val biostats_df = spark.read.option("header","true").csv("/home/xs108-abhdas/Downloads/biostats.csv").toDF().persist(StorageLevel.MEMORY_AND_DISK)   //persistence
     biostats_df.createOrReplaceTempView("biostats_df")
-    val query1 = spark.sql("Select * From biostats_df Where Age >40")
+    val query1 = spark.sql("Select * From biostats_df Where Age >40").show()
 
 
-    println(query1.show())
     println("Dataframe:" + biostats_df.show())
     println(biostats_df.printSchema())
 
     val biostats_ds = biostats_df.as[Person]
     biostats_ds.createOrReplaceTempView(("biostats_ds"))
-    val query2 = spark.sql("Select * From biostats_ds where sex = 'M'")
-    println(query2.show())
+    val query2 = spark.sql("Select * From biostats_ds where sex = 'M'").show()
     // org.apache.spark.sql.catalyst.encoders.OuterScopes.addOuterScope(this)
 
 
@@ -80,5 +78,7 @@ object WordCount {
 
 
     println("Dataset:" + biostats_ds.show())
+    spark.close()
+    sc.stop()
   }
 }
