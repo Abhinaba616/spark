@@ -83,20 +83,23 @@ object SparkTASK {
 
 
    // loading json data
-    val jsonSampledf = spark.read.option("inferSchema","true").option("multiLines","true").json("/home/xs108-abhdas/Downloads/sample.json")
+    val jsonSampledf = spark.read.option("inferSchema","true").option("multiLines","true").json("/home/xs108-abhdas/Downloads/sample.json").toDF().persist(StorageLevel.MEMORY_AND_DISK)
     jsonSampledf.printSchema()
     jsonSampledf.createOrReplaceTempView("employee")
+    jsonSampledf.collect()
     println(jsonSampledf.show())
-    spark.sql("SELECT COUNT(userId) FROM employee").show()
+    spark.sql("SELECT COUNT(userId) as total_records FROM employee").show()
     spark.sql("SELECT userId FROM employee WHERE firstName = 'racks' ").show()  //sql query over json file to search for a first name
 
 
    // loading parquet data
-   val Employeedf = spark.read.option("inferSchema","true").option("multiLines","true").json("/home/xs108-abhdas/Downloads/sample.json")
-   Employeedf.write.parquet("Employee.parquet")
-   val parquetFileDF = spark.read.parquet("Employee.parquet")
-   parquetFileDF.createOrReplaceTempView("parquetFile")
-   spark.sql("SELECT name FROM parquetFile WHERE userID BETWEEN 2 AND 4").show()
+   import spark.implicits._
+   val usersdf = spark.read.option("multiLines","true").option("inferSchema","true").parquet("/home/xs108-abhdas/Downloads/users.parquet").toDF().persist(StorageLevel.MEMORY_AND_DISK)
+   println(usersdf.show())
+   //Employeedf.write.parquet("/home/xs108-abhdas/Downloads/Employee.parquet")
+   //val parquetFileDF = spark.read.parquet("/home/xs108-abhdas/Downloads/users.parquet")
+   usersdf.createOrReplaceTempView("parquetFile")
+   spark.sql("SELECT name FROM parquetFile WHERE favorite_color = 'red' ").show()
 
     spark.close()
     sc.stop()
