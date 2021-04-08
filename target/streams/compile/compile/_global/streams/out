@@ -1,4 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/home/xs108-abhdas/IdeaProjects/test1/src/main/scala/main/SparkTASK.scala:87:34: org.apache.spark.sql.DataFrameReader does not take parameters[0m
-[0m[[0m[31merror[0m] [0m[0m    val jsonSampledf = spark.read().json("/home/xs108-abhdas/Downloads/Sample-JSON-file-with-multiple-records-download.json")[0m
-[0m[[0m[31merror[0m] [0m[0m                                 ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/xs108-abhdas/IdeaProjects/test1/src/main/scala/main/SparkTASK.scala:114:15: identifier expected but '.' found.[0m
+[0m[[0m[31merror[0m] [0m[0m   rdd1.write..option("inferschema","true").csv("/home/xs108-abhdas/Downloads/users_df.csv")[0m
+[0m[[0m[31merror[0m] [0m[0m              ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m

@@ -7,6 +7,7 @@ import org.apache.spark.sql.{Encoder, Encoders}
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql._
+import org.apache.spark.sql.execution.streaming.FileStreamSource.Timestamp
 import org.apache.spark.storage.StorageLevel
 
 case class Person(Name: String,
@@ -14,6 +15,31 @@ case class Person(Name: String,
                   Age: String,
                   Height: String,
                   Weight: String)
+
+case class Employee(_corrupt_record: String,
+                    emailAddress: String,
+                    firstName: String,
+                    lastName: String,
+                    phoneNumber: String,
+                    userId: Long)
+
+case class User( registration_dttm: Timestamp,
+                 id: Integer,
+                 first_name: String,
+                 last_name: String,
+                 email: String,
+                 gender: String,
+                 ip_address:String,
+                 cc: String,
+                 country: String,
+                 birthdate: String,
+                 salary: Double,
+                 title: String,
+                 comments: String)
+
+
+
+
 
 object SparkTASK {
 
@@ -49,6 +75,8 @@ object SparkTASK {
 
 
     val biostats_df = spark.read.option("inferSchema","true").option("header","true").csv("/home/xs108-abhdas/Downloads/biostats.csv").toDF().persist(StorageLevel.MEMORY_AND_DISK)   //persistence
+        //using coalesce for partitioning
+
     biostats_df.createOrReplaceTempView("biostats_df")
     spark.sql("SELECT * FROM biostats_df WHERE Age BETWEEN 35 AND 45 ").show()  //sql query over csv file to get all records having age >35
 
@@ -60,26 +88,7 @@ object SparkTASK {
     biostats_ds.createOrReplaceTempView(("biostats_ds"))
     spark.sql("Select * From biostats_ds where sex = 'M'").show()   //sql query over csv file to get all records having sex = male
     // org.apache.spark.sql.catalyst.encoders.OuterScopes.addOuterScope(this)
-
-
-
-
-
-    // val biostats_ds = spark.read.csv("/home/xs108-abhdas/Downloads/biostats.csv").as[Person]
-
-
-    //import spark.implicits._
-
-
-
-    /*val biostats_ds: Dataset[Person]= spark.read
-      .format("csv")
-      .option("header", "true")
-      .option("delimiter", ";")
-      .option("inferSchema", "true")
-      .load("/home/xs108-abhdas/Downloads/biostats.csv")
-      .as[Person] */
-   println("Dataset:" + biostats_ds.show())
+    println("Dataset:" + biostats_ds.show())
 
 
    // loading json data
@@ -91,15 +100,29 @@ object SparkTASK {
     spark.sql("SELECT COUNT(userId) as total_records FROM employee").show()
     spark.sql("SELECT userId FROM employee WHERE firstName = 'racks' ").show()  //sql query over json file to search for a first name
 
+   val jsonSample_ds = jsonSampledf.as[Employee]
+   jsonSample_ds.createOrReplaceTempView("jsonsample_DS")
+   spark.sql("SELECT firstName,emailAddress FROM jsonsample_DS where userID ='4' ").show()
+   println("jsonSampleDS" + jsonSample_ds.show())
+
+
 
    // loading parquet data
    import spark.implicits._
-   val usersdf = spark.read.option("multiLines","true").option("inferSchema","true").parquet("/home/xs108-abhdas/Downloads/users.parquet").toDF().persist(StorageLevel.MEMORY_AND_DISK)
-   println(usersdf.show())
+   val users_df = spark.read.option("multiLines","true").option("inferSchema","true").parquet("/home/xs108-abhdas/Downloads/userdata5.parquet").toDF().persist(StorageLevel.MEMORY_AND_DISK)
+   val rdd1 =users_df.repartition(2)
+   rdd1.write.option("inferschema","true").csv("/home/xs108-abhdas/Documents/users_df.csv")
+   println(rdd1.rdd.partitions.length)
+   println(users_df.show())
+   users_df.printSchema()
    //Employeedf.write.parquet("/home/xs108-abhdas/Downloads/Employee.parquet")
    //val parquetFileDF = spark.read.parquet("/home/xs108-abhdas/Downloads/users.parquet")
-   usersdf.createOrReplaceTempView("parquetFile")
-   spark.sql("SELECT name FROM parquetFile WHERE favorite_color = 'red' ").show()
+   users_df.createOrReplaceTempView("parquetFile")
+   spark.sql("SELECT id,first_name,last_name FROM parquetFile WHERE country = 'India' ").show()
+
+   val users_ds = users_df.as[User]
+   users_ds.createOrReplaceTempView("users_DS")
+   spark.sql("SELECT first_name,last_name,email,gender FROM users_DS where gender = 'Male' AND country ='United States' ").show()
 
     spark.close()
     sc.stop()
