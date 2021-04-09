@@ -1,4 +1,9 @@
-[0m[[0m[31merror[0m] [0m[0m/home/xs108-abhdas/IdeaProjects/test1/src/main/scala/main/SparkTASK.scala:114:15: identifier expected but '.' found.[0m
-[0m[[0m[31merror[0m] [0m[0m   rdd1.write..option("inferschema","true").csv("/home/xs108-abhdas/Downloads/users_df.csv")[0m
-[0m[[0m[31merror[0m] [0m[0m              ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
+[0m[[0m[31merror[0m] [0m[0m/home/xs108-abhdas/IdeaProjects/test1/src/main/scala/main/SparkTASK.scala:53:18: encountered unrecoverable cycle resolving import.[0m
+[0m[[0m[31merror[0m] [0m[0mNote: this is often due in part to a class depending on a definition nested within its companion.[0m
+[0m[[0m[31merror[0m] [0m[0mIf applicable, you may wish to try moving some members into another object.[0m
+[0m[[0m[31merror[0m] [0m[0m    import spark.implicits._[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/xs108-abhdas/IdeaProjects/test1/src/main/scala/main/SparkTASK.scala:66:21: value toDF is not a member of org.apache.spark.rdd.RDD[(String, Int)][0m
+[0m[[0m[31merror[0m] [0m[0m    val df = counts.toDF("words", "count")[0m
+[0m[[0m[31merror[0m] [0m[0m                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
