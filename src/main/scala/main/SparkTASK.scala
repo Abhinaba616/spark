@@ -14,7 +14,8 @@ case class Person(Name: String,
                   Sex: String,
                   Age: String,
                   Height: String,
-                  Weight: String)
+                  Weight: String,
+                  userId: Integer)
 
 case class Employee(_corrupt_record: String,
                     emailAddress: String,
@@ -84,6 +85,7 @@ case class User( registration_dttm: Timestamp,
      spark.sql ("Select * From biostats_ds where sex = 'M'").show () //sql query over csv file to get all records having sex = male
      println ("Dataset:" + biostats_ds.show () )
 
+
    // loading json data
     val jsonSampledf = spark.read.option("inferSchema","true").option("multiLines","true").json("/home/xs108-abhdas/Downloads/sample.json").toDF().persist(StorageLevel.MEMORY_AND_DISK)
     jsonSampledf.printSchema()
@@ -106,8 +108,7 @@ case class User( registration_dttm: Timestamp,
    val excluColumns= "comments"
    users_df.drop(excluColumns).show()
    users_df.printSchema()
-   //Employeedf.write.parquet("/home/xs108-abhdas/Downloads/Employee.parquet")
-   //val parquetFileDF = spark.read.parquet("/home/xs108-abhdas/Downloads/users.parquet")
+
    users_df.createOrReplaceTempView("parquetFile")
    spark.sql("SELECT id,first_name,last_name FROM parquetFile WHERE country = 'India' ").show()
 
